@@ -40,18 +40,16 @@ app.post('/salvarcomentario', (req, res) => {
     })
 })
 
+
 app.get('/ouvircomentario/:id', (req, res) => {
-
-
-    const idcomentario = req.params.id;
+    console.log('Testandoooo saporra');
+    var idcomentario = req.params.id;
 
     Comentario.findOne({
         where: { id: idcomentario }
-    }).then(comentarios => {
+    }).then(comentario => {
 
-        const texto = comentarios.descricao
-
-        console.log("Comentario ou alguma coisa");
+        const texto = comentario.descricao
         const fs = require('fs');
         const TextToSpeechV1 = require('ibm-watson/text-to-speech/v1');
         const { IamAuthenticator } = require('ibm-watson/auth');
@@ -64,7 +62,10 @@ app.get('/ouvircomentario/:id', (req, res) => {
             voice: 'pt-BR_IsabelaVoice', // Optional voice
             accept: 'audio/wav'
         };
-        
+        // Synthesize speech, correct the wav header, then save to disk
+        // (wav header requires a file length, but this is unknown until after the header is already generated and sent)
+        // note that `repairWavHeaderStream` will read the whole stream into memory in order to process it.
+        // the method returns a Promise that resolves with the repaired buffer
         textToSpeech
             .synthesize(params)
             .then(response => {
@@ -72,8 +73,8 @@ app.get('/ouvircomentario/:id', (req, res) => {
                 return textToSpeech.repairWavHeaderStream(audio);
             })
             .then(repairedFile => {
-                fs.writeFileSync('./_upload/'+idcomentario+'-audio.wav', repairedFile)
-                console.log('--> Texto convertido para Audio!');
+                fs.writeFileSync('./public/_upload/' + idcomentario + 'audio.wav', repairedFile);
+                console.log(idcomentario + 'audio.wav written with a corrected wav header');
             })
             .catch(err => {
                 console.log(err);
@@ -81,10 +82,15 @@ app.get('/ouvircomentario/:id', (req, res) => {
 
         textToSpeech.synthesizeUsingWebSocket(params);
 
-    }).then(() => {
-        res.redirect("/");
     })
 
 });
 
-app.listen(port, () => console.log('-->Rodando aplicação'));
+
+function hello(){
+    console.log("--> Chegamos aqui")
+    
+}
+
+
+app.listen(port, () => console.log('-->Rodando'));

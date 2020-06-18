@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testando alguma coisa aqui</title>
-    
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testando alguma coisa aqui</title>
+
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-    <div class="container">
-      <div class="row mt-sm-2 mb-sm-4">
-        <div class="col-md-6 col-sm-12">
-          <div class="card">
-            <div class="card-body">
-              <form method="POST" action="/salvarcomentario">
-                  <h2>Comentários</h2>
-                  <textarea name="descricao" rows="5" placeholder="Escreava seu comentario" class="form-control"></textarea>
-                  <br>
-                  <button class="btn btn-dark col-12">cadastrar</button>
-              </form>
-            </div>
+  <div class="container">
+    <div class="row mt-sm-2 mb-sm-4">
+      <div class="col-md-6 col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <form method="POST" action="/salvarcomentario">
+              <h2>Comentários</h2>
+              <textarea name="descricao" rows="5" placeholder="Escreava seu comentario" class="form-control"></textarea>
+              <br>
+              <button class="btn btn-dark col-12">cadastrar</button>
+            </form>
           </div>
         </div>
-        <div class="col-md-6 col-sm-12">
-          <div class="card">
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <div class="card">
+          <div class="card-body">
             <div class="card-body">
-            <div class="card-body">
-              <h3>Comentários</h3>
-                <% comentarios.forEach(comentarios => { %>
-                   <p id="<%=comentarios.id %>"><%= comentarios.descricao  %></p>
-                   <a href="/ouvircomentario/<%=comentarios.id%>" name="<%=comentarios.id%>" class="btn btn-dark col-12 Mybtn">Ouvir</a>
-                   <hr>
+              <% comentarios.forEach(comentarios => { %>
+              <form method="GET" action="/ouvircomentario/<%= comentarios.id %>">
+                <h3>Comentários</h3>
+                <p ><%= comentarios.descricao  %></p>
+                <audio id="<%=comentarios.id%>audio">
+                  <source src="/upload/<%=comentarios.id%>audio.wav" type="audio/mpeg">
+                </audio>
+                <button  onclick="playAudio('<%= comentarios.id %>audio')" class="btn btn-dark col-12 Mybtn">Ouvir</button>
+                <hr>
+              </form>
                 <% }) %>
             </div>
           </div>
@@ -39,7 +46,15 @@
       </div>
     </div>
 </body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
+<script>
+  function playAudio(id){
+    var teste = document.getElementsByTagName('audio')[id];
+    teste.play();
+  }
+</script>
 </html>
