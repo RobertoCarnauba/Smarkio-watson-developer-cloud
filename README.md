@@ -12,7 +12,7 @@ cadastrados devem ser listados.
 Clique no botão "Gerar Audio" para realizar a conversão do comentário de texto para áudio, ultilizando a API **Text to Speech do IBM Watson**, e logo apos clicar no botão "Ouvir Audio" para reproduizi o audio gerado.
 
 
-### Configrurando o banco de dados
+### Configurando o banco de dados
 
 executar o comando para cria o database:
 ````
