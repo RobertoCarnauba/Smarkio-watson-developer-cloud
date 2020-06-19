@@ -14,7 +14,7 @@ Clique no botão "Gerar Audio" para realizar a conversão do comentário de text
 
 ### Configurando o banco de dados
 
-executar o comando para cria o database:
+executar o comando para criar o database:
 ````
 CREATE DATABASE comentarios
 ````
