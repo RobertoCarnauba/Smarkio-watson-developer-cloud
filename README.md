@@ -11,11 +11,38 @@ usuário poderá cadastrar novos comentários. No painel da direita todos os com
 cadastrados devem ser listados.
 Clique no botão "Gerar Audio" para realizar a conversão do comentário de texto para áudio, ultilizando a API **Text to Speech do IBM Watson**, e logo apos clicar no botão "Ouvir Audio" para reproduizi o audio gerado.
 
-## Para acessar o serviço
-http://localhost:8000/
 
+###Configrurando o banco de dados
 
-## Principais tecnologias utilizadas 
+executar o comando para cria o database:
+````
+CREATE DATABASE comentarios
+````
+
+No arquivo **/database/database.js**  é possivel alterar as configurações de conexão ao banco.
+```
+const connection = new Sequelize('comentarios','root','',{
+    host:'localhost',
+    dialect:'mysql'
+});
+
+```
+### no index.js
+Altere a apikey e a url gerado na conta da IBM.
+```
+        const textToSpeech = new TextToSpeechV1({
+            authenticator: new IamAuthenticator({ apikey: '**SuaApiKEY**' }),
+            url: '**suaURl**'
+ });
+``` 
+### No terminal
+Acessando o terminal navegando para dentro do projeto e em seguida execute o comando:
+***npm start***
+
+### Acessando a aplicação no navegador: 
+**http://localhost:8000/**
+
+## Principais tecnologias utilizadas:
 
 
 | Tecnologia                | Descrição                                                                           |            
