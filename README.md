@@ -12,7 +12,7 @@ cadastrados devem ser listados.
 Clique no botão "Gerar Audio" para realizar a conversão do comentário de texto para áudio, ultilizando a API **Text to Speech do IBM Watson**, e logo apos clicar no botão "Ouvir Audio" para reproduizi o audio gerado.
 
 
-###Configrurando o banco de dados
+### Configrurando o banco de dados
 
 executar o comando para cria o database:
 ````
@@ -27,7 +27,7 @@ const connection = new Sequelize('comentarios','root','',{
 });
 
 ```
-### no index.js
+### No arquivo /index.js
 Altere a apikey e a url gerado na conta da IBM.
 ```
         const textToSpeech = new TextToSpeechV1({
