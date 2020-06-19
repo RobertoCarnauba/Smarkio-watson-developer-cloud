@@ -4,10 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Testando alguma coisa aqui</title>
+  <title>Teste - Smarkio</title>
 
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
 </head>
 
 <body>
@@ -17,10 +19,11 @@
         <div class="card">
           <div class="card-body">
             <form method="POST" action="/salvarcomentario">
-              <h2>Comentários</h2>
-              <textarea name="descricao" rows="5" placeholder="Escreava seu comentario" class="form-control"></textarea>
+              <h2>Comentário</h2>
+              <textarea required name="descricao" rows="5" placeholder="Escreva seu comentario!"
+                class="form-control"></textarea>
               <br>
-              <button class="btn btn-dark col-12">cadastrar</button>
+              <button class="btn btn-dark col-12">Comentar</button>
             </form>
           </div>
         </div>
@@ -29,32 +32,48 @@
         <div class="card">
           <div class="card-body">
             <div class="card-body">
+              <h3>Lista de Comentários</h3>
               <% comentarios.forEach(comentarios => { %>
-              <form method="GET" action="/ouvircomentario/<%= comentarios.id %>">
-                <h3>Comentários</h3>
-                <p ><%= comentarios.descricao  %></p>
-                <audio id="<%=comentarios.id%>audio">
-                  <source src="/upload/<%=comentarios.id%>audio.wav" type="audio/mpeg">
-                </audio>
-                <button  onclick="playAudio('<%= comentarios.id %>audio')" class="btn btn-dark col-12 Mybtn">Ouvir</button>
-                <hr>
-              </form>
-                <% }) %>
+              <p #id><%= comentarios.descricao  %></p>
+              <audio id="<%=comentarios.id%>audio">
+                <source src="/upload/<%=comentarios.id%>audio.wav" type="audio/mpeg">
+              </audio>
+              <button value="<%= comentarios.id %>" onclick="converterTextoAudio(<%= comentarios.id %>)" class="btn btn-dark col-12 Mybtn btnGravar"><i class="fa fa-file-audio-o"></i> Gerar Audio</button>
+              <button id="btnOuvir<%= comentarios.id %>"
+                onclick="playAudio('<%= comentarios.id %>audio', '<%= comentarios.id %>')" type="submit" class="btn btn-dark col-12 Mybtn"><i class="fa fa-play"></i> Ouvir Audio</button>
+              <hr>
+              <% }) %>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      function playAudio(id) {
+        var teste = document.getElementsByTagName('audio')[id];
+        teste.play();
+      }
+      function converterTextoAudio(id) {
+        var newWindow = window.open(`/ouvircomentario/${id}`, 'newWindow', 'toolbar=no,menubar=no,resizable=no,scrollbars=no,status=no,location=no,width=' + 200 + ',height=' + 100);
+        setTimeout(function () {
+          newWindow.close();
+        }
+          , 3000);
+      }
+
+      $('.btnGravar').click(function () {
+        setTimeout(function () {
+          window.location.reload();
+        }
+          , 3000);
+      });
+    </script>
 </body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-<script>
-  function playAudio(id){
-    var teste = document.getElementsByTagName('audio')[id];
-    teste.play();
-  }
-</script>
 </html>

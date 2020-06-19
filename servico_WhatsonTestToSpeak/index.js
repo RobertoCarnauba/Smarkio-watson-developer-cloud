@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const connection = require('./database/database')
 const Comentario = require('./database/Comentario')
 
+//CONEXÃO COM BANCO MYSQL
 connection
     .authenticate()
     .then(() => {
@@ -20,6 +21,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// ROTA PARA LISTAR COMENTÁRIOS
 app.get('/', (req, res) => {
     Comentario.findAll({
         raw: true,
@@ -31,18 +33,18 @@ app.get('/', (req, res) => {
     }))
 })
 
-app.post('/salvarcomentario', (req, res) => {
+//ROTA PARA SALVAR O COMENTÁRIO
+app.post('/salvarcomentario', (req, res) => {    
     var descricao = req.body.descricao
     Comentario.create({
         descricao: descricao
     }).then(() => {
-        res.redirect("/");
+       res.redirect('/'); 
     })
 })
 
-
+//ROTA PARA CONVERTER O COMENTARIO EM AUDIO E CRIAR O ARQUIVO WAV
 app.get('/ouvircomentario/:id', (req, res) => {
-    console.log('Testandoooo saporra');
     var idcomentario = req.params.id;
 
     Comentario.findOne({
@@ -62,10 +64,7 @@ app.get('/ouvircomentario/:id', (req, res) => {
             voice: 'pt-BR_IsabelaVoice', // Optional voice
             accept: 'audio/wav'
         };
-        // Synthesize speech, correct the wav header, then save to disk
-        // (wav header requires a file length, but this is unknown until after the header is already generated and sent)
-        // note that `repairWavHeaderStream` will read the whole stream into memory in order to process it.
-        // the method returns a Promise that resolves with the repaired buffer
+
         textToSpeech
             .synthesize(params)
             .then(response => {
@@ -73,24 +72,15 @@ app.get('/ouvircomentario/:id', (req, res) => {
                 return textToSpeech.repairWavHeaderStream(audio);
             })
             .then(repairedFile => {
-                fs.writeFileSync('./public/_upload/' + idcomentario + 'audio.wav', repairedFile);
-                console.log(idcomentario + 'audio.wav written with a corrected wav header');
+                fs.writeFileSync('./public/upload/' + idcomentario + 'audio.wav', repairedFile);
+                console.log(idcomentario + 'audio.wav foi inserido!');
             })
             .catch(err => {
                 console.log(err);
             });
 
         textToSpeech.synthesizeUsingWebSocket(params);
-
     })
-
 });
 
-
-function hello(){
-    console.log("--> Chegamos aqui")
-    
-}
-
-
-app.listen(port, () => console.log('-->Rodando'));
+app.listen(port, () => console.log('-->Processando...'));
